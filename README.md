@@ -1,16 +1,22 @@
 # Jordan's Notes:
 Question 1:
 
-For this question I chose browser side Javascript, since this is a relatively low computing power job and this will streamline things a lot.  The idea is that any user can load this data into a website and return the modified results all on the front end.
+For this question I chose browser side Javascript, since this is a relatively low computing power job and this will streamline things a lot.  If we were sending this information on to another internal system we would need to move this data to the back end, but for our purposes (creating visuals for managment) we are able to keep the data on the front end and generate visuals more easily.
 
 To run the app for development I set up a python server by running this in the terminal "python -m http.server 8080 &."
 
 I found an inconsistancy on the second payment (not wrapped in a bracket).  I chose to assume that this is a common occurance when there is only one payment so I coded a solution for it.
 
-Returning the result for question 1 was not specified so I chose to return the finished json in a console.log, showing that this data is indeed in the browser and can be used to display data on a page.  In the workplace, my assumption is that the deliverable would be some kind of table on a website and not a raw json file.
+I wrapped all of my work from question 1 in a promise statement so that it would work eaqually well with any size json file from an external source. The resulting JSON object is held within the promise for use in question 2.
 
 
 Question 2:
+
+I am completely new to Kendo UI so I spent some time familiarizing myself with the library.  I started with a basic bar graph and looked at other stacked bar graphs before realizing that they are built to more easily handle a predictable number of stack categories.  In other words it is not set up to create stack columns with one column for each vendor.  
+
+I then created a pie chart splitting out the payments similarly to the bargraph above, but in a pie chart format.  To see individual invoice data, I created a loop, looping through each vendor to show the individual invoices.  It would be interesting to explore tool tips or javascript efects like creating hiding the vendor piecharts until the vendor slice is selected in the larger pie chart (there are animation effects when you click on a slice of pie chart so I'm sure there is a way to make other changes based on this action).
+
+While invoice and payment information at a high level might be interesting to our finance team, I would guess that we could make much more interesting visuals with more information.  A key data metric that I would like to see is payment date (the date our payment is submitted to the vendor).  With this data we could find much more interesting information on turnaround time and payment amounts over time or accross different quarters. Of course, the people who know best what kind of visuals would be beneficial are the people on the finance team. It would be productive to work with them to understand what information would be most helpful.
 
 
 

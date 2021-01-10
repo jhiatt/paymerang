@@ -8,7 +8,7 @@ function addTotal(array) {
         var remittances = array[i].payment.remittance;
 
         var total_amount = 0
-
+        
         // ensure the remittance is formatted as an array that can be looped through
         if (remittances.length) {
             
@@ -32,10 +32,8 @@ function addTotal(array) {
 
 // we will use this function to display the kendo charts
 function displayCharts(json){
-    // need an array of names and an array of total amounts
-    // names and amounts are 1 unique per payment
-    // should we add descriptions for tool tips?
 
+    // save the json data into these arrays for ease of use.  Each chart formats data a little differently so this semmed to be the easiest way
     var index = []
     var names = []
     var totals = []
@@ -47,32 +45,9 @@ function displayCharts(json){
         index.push(i)
         names.push(json[i].payment.vendor.name)
         totals.push(json[i].payment.total_amount)
-        
-        var remAmount = []
-        var rem = json[i].payment.remittance
-        if(rem.length){
-            for(var h = 0; h<rem.length; h++){
-                remAmount.push(rem[h].amount)
-            }
-        } else {
-            remAmount.push(rem.amount)
-        }
-        
-        amounts.push(remAmount)
-    }
-    
-
-    var stackedBarData = []
-    for(var j = 0; j<index.length; j++){
-        
-        stackedBarData.push({
-            // i need one array for each invoice number 
-            'name': names[j],
-            'data': amounts[j],
-            'color': colors[j],
-        })
     }
 
+    // basic bar chart for a high level view.  I explored a lot of barcharts with stacked data but I couldn't find a way that would let me stack by vendor with an unlimited number of invoices.
     $("#chart").kendoChart({
         title: {
             text: "Total Payments by Payment"
@@ -84,40 +59,6 @@ function displayCharts(json){
             categories: names
         }
     });
-
-    // $("#chart").kendoChart({
-    //     title: {
-    //         text: "Number of invoices"
-    //     },
-    //     legend: {
-    //         visible: false
-    //     },
-    //     seriesDefaults: {
-    //         type: "column",
-    //         stack: true
-    //     },
-    //     series: stackedBarData,
-    //     valueAxis: {
-    //         // max: Math.max(totals) + 1000,
-    //         max: 18000,
-    //         line: {
-    //             visible: false
-    //         },
-    //         minorGridLines: {
-    //             visible: true
-    //         }
-    //     },
-    //     categoryAxis: {
-    //         categories: ['Invoice 1','Invoice 2','Invoice 3','Invoice 4'],
-    //         majorGridLines: {
-    //             visible: false
-    //         }
-    //     },
-    //     tooltip: {
-    //         visible: true,
-    //         template: "#= series.name #: #= value #"
-    //     }
-    // });
 
     // get total accross all values for pie chart
     grandTotal = totals.reduce((a,b) => a+b,0)
@@ -133,6 +74,7 @@ function displayCharts(json){
         })
     }
 
+    // large pie chart
     $("#piechart").kendoChart({
         title: {
             position: "bottom",
@@ -148,7 +90,8 @@ function displayCharts(json){
             labels: {
                 visible: true,
                 background: "transparent",
-                template: "#= category #: \n #= value#"
+                // I would like to learn more about these template strings.  The tooltips we have could be much better but for whatever reason I couldn't figure out how to add variables here.
+                template: "#= category #: \n $#= value#"
             }
         },
         series: [{
@@ -158,14 +101,17 @@ function displayCharts(json){
         }],
         tooltip: {
             visible: true,
-            format: "{0}"
+            format: "${0}"
         }
     });   
 
-    // pie chart generator
+    // pie chart generator.  After building the larger pie chart I built this loop to generate mini piecharts expanding on each slice of the larger piechart
     for(var k = 0; k<json.length; k++){
         var smallPieData = []
         var rem = json[k].payment.remittance
+        // Here again we have a work around for payments with one payment not structured as an array.  It doesn't really make sense to have a pie chart with one payment, however, looking just at the larger pie chart without additional information there is no way to see how many invoices are represented in each slice.
+        // Leaving out some pie charts because there is only one invoice might make it feel that data is missing, because the viewer will not know that the missing pie charts only have one invoice.
+        // This issue would be solved with better tooltips. If I were to work on this longer that would be a priority.
         if(rem.length){
             for(var l = 0; l<rem.length; l++){
                 smallPieData.push({
@@ -181,7 +127,6 @@ function displayCharts(json){
                 'value': rem.amount
             })
         }
-console.log(smallPieData)
         $("#piechart"+k).kendoChart({
             title: {
                 position: "bottom",
@@ -195,9 +140,10 @@ console.log(smallPieData)
             },
             seriesDefaults: {
                 labels: {
-                    visible: false,
+                    visible: true,
                     background: "transparent",
-                    template: "#= category #: \n #= value#"
+                    // these lables are sometimes cut off reguardless of chart size.  With more time I would investigate this further.
+                    template: "#= category #: \n $#= value#"
                 }
             },
             series: [{
@@ -208,7 +154,7 @@ console.log(smallPieData)
             tooltip: {
                 visible: true,
                 format: "{0}",
-                template: "#= category #: \n #= value#"
+                template: "#= category #: \n $#= value#"
             }
         });
     }
