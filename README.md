@@ -1,7 +1,7 @@
 # Jordan's Notes:
 Question 1:
 
-For this question I chose browser side javascript, since this is a relatively low computing power job and this will streamline things a lot.  The idea is that any user can load this data into a website and return the modified results all on the front end.
+For this question I chose browser side Javascript, since this is a relatively low computing power job and this will streamline things a lot.  The idea is that any user can load this data into a website and return the modified results all on the front end.
 
 To run the app for development I set up a python server by running this in the terminal "python -m http.server 8080 &."
 

@@ -11,11 +11,27 @@
 		<script src="https://kendo.cdn.telerik.com/2019.2.619/js/kendo.all.min.js"></script>
 
 		<style type="text/css">	
+			.grid-container {
+				display: grid;
+				grid-template-columns: auto auto auto;
+				padding: 10px;
+			}
 		</style>
 	</head>
 	<body>
 
-		<div id="chart" style="width: 400px; height: 600px"></div>
+		<div id="chart" style="width: 800px; height: 600px"></div>
+		<div id="piechart" style="width: 600px; height: 600px"></div>
+
+		<!-- pie charts for each vendor -->
+		<div class='grid-container'>
+			<div class="grid-item" id="piechart0" style="width: 300px; height: 300px"></div>
+			<div class="grid-item" id="piechart1" style="width: 300px; height: 300px"></div>
+			<div class="grid-item" id="piechart2" style="width: 300px; height: 300px"></div>
+			<div class="grid-item" id="piechart3" style="width: 300px; height: 300px"></div>
+			<div class="grid-item" id="piechart4" style="width: 300px; height: 300px"></div>
+			<div class="grid-item" id="piechart5" style="width: 300px; height: 300px"></div>
+		</div>
 
 		<!-- all js code for this project contained here -->
 		<script type="text/javascript" src='./total.js'></script>
